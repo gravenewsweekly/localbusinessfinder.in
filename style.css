@@ -1,0 +1,257 @@
+/* ===== Global 1998 Styles ===== */
+body {
+    background-color: #ffffff;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    color: #000000;
+}
+
+table {
+    border-collapse: collapse;
+}
+
+a {
+    text-decoration: none;
+    color: #0066cc;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+input, select, textarea {
+    border: 1px solid #999999;
+    background-color: #ffffff;
+    font-family: Arial;
+    padding: 5px;
+}
+
+input[type="submit"], input[type="button"], button {
+    cursor: pointer;
+    font-family: Arial;
+    padding: 5px 15px;
+    background: #0066cc;
+    color: white;
+    border: none;
+}
+
+hr {
+    border: 0;
+    height: 1px;
+    background-color: #cccccc;
+    margin: 10px 0;
+}
+
+/* ===== Header Styles ===== */
+.header {
+    width: 100%;
+    border: 0;
+    cellspacing: 0;
+    cellpadding: 10;
+    bgcolor: #0066cc;
+}
+
+.header-title {
+    font: Arial;
+    size: 5;
+    color: white;
+}
+
+.header-nav {
+    font: Arial;
+    size: 2;
+    color: white;
+}
+
+/* ===== Footer Styles ===== */
+.footer {
+    width: 100%;
+    border: 0;
+    cellspacing: 0;
+    cellpadding: 10;
+    bgcolor: #333333;
+}
+
+.footer-text {
+    font: Arial;
+    size: 1;
+    color: white;
+}
+
+/* ===== Common Content Styles ===== */
+.main-content {
+    width: 80%;
+    border: 0;
+    align: center;
+    cellpadding: 20;
+}
+
+.content-box {
+    background: #f9f9f9;
+    padding: 20px;
+}
+
+.disclaimer-box {
+    background: #ffffcc;
+    border: 1px dashed #ff9900;
+    padding: 10px;
+    margin-top: 20px;
+    text-align: center;
+    font-size: 12px;
+}
+
+/* ===== Homepage Styles ===== */
+.search-form {
+    background: #f0f0f0;
+    padding: 15px;
+    border: 1px solid #ccc;
+}
+
+.category-grid {
+    width: 100%;
+    border: 0;
+    cellspacing: 10;
+    cellpadding: 0;
+}
+
+/* ===== Business Listings Styles ===== */
+.business-listing {
+    width: 100%;
+    border: 0;
+    cellspacing: 0;
+    cellpadding: 10;
+    bgcolor: #ffffff;
+}
+
+.listing-highlight {
+    background: #e6f2ff;
+}
+
+/* ===== Forms Styles ===== */
+.form-table {
+    width: 100%;
+    border: 0;
+    cellspacing: 10;
+}
+
+.form-message {
+    font-family: Arial;
+    margin-top: 10px;
+}
+
+/* ===== Team Page Styles ===== */
+.team-member-card {
+    width: 33%;
+    valign: top;
+    align: center;
+}
+
+.team-photo {
+    width: 120px;
+    height: 120px;
+    border: 1px solid #0066cc;
+}
+
+.team-bio {
+    font: Arial;
+    size: 2;
+}
+
+/* ===== Careers Page Styles ===== */
+.job-listing {
+    width: 100%;
+    border: 0;
+    cellspacing: 0;
+    cellpadding: 10;
+}
+
+.job-details {
+    padding-left: 30px;
+    border-bottom: 1px solid #ccc;
+}
+
+/* ===== About/Privacy/Terms Styles ===== */
+.legal-text {
+    font: Arial;
+    size: 2;
+}
+
+.legal-gif {
+    margin: 10px auto;
+    display: block;
+}
+
+/* ===== Special Effects ===== */
+.blink {
+    text-decoration: blink;
+    color: #ff0000;
+    animation: blink 1s step-end infinite;
+}
+
+@keyframes blink {
+    50% { opacity: 0; }
+}
+
+.marquee {
+    background-color: #ffffcc;
+    padding: 5px;
+    border: 1px dashed #ff9900;
+}
+
+/* ===== Ad Network Styles ===== */
+.ad-network-logo {
+    width: 100px;
+    border: 0;
+}
+
+.ad-network-table {
+    background: #ffffcc;
+    padding: 10px;
+    margin: 15px 0;
+}
+
+/* ===== Responsive Tweaks ===== */
+@media (max-width: 768px) {
+    .main-content {
+        width: 95%;
+    }
+    
+    .team-member-card {
+        width: 100%;
+        display: block;
+        margin-bottom: 20px;
+    }
+}
+
+/* ===== Page-Specific Overrides ===== */
+/* Homepage Popular Categories */
+.popular-cats td {
+    padding: 5px 0;
+}
+
+/* Business Details Page */
+.business-highlight {
+    background: #e6f2ff;
+    padding: 10px;
+}
+
+/* Contact Page */
+.contact-methods {
+    font: Arial;
+    size: 2;
+}
+
+/* Monetization Page */
+.revenue-model {
+    background: #f0f0f0;
+    padding: 15px;
+    margin: 10px 0;
+}
+
+/* Careers Page */
+.job-application {
+    background: #ffffcc;
+    padding: 15px;
+    border: 1px dashed #ff9900;
+}
