@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - Local Business Finder</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- 1998-style header -->
+    <table width="100%" border="0" cellspacing="0" cellpadding="10" bgcolor="#0066cc">
+        <tr>
+            <td width="200">
+                <font face="Arial" size="5" color="white">
+                    <b>Local Business Finder</b>
+                </font>
+            </td>
+            <td align="right">
+                <font face="Arial" size="2" color="white">
+                    <a href="index.html" style="color:white;">Home</a> | 
+                    <a href="submit-business.html" style="color:white;">Submit Business</a> | 
+                    <a href="about.html" style="color:white;">About Us</a> | 
+                    <a href="contact.html" style="color:white;">Contact</a> |
+                    <a href="monetization.html" style="color:white;">Monetization Policy</a>
+                </font>
+            </td>
+        </tr>
+    </table>
+
+    <!-- Main content -->
+    <table width="80%" border="0" align="center" cellpadding="20">
+        <tr>
+            <td>
+                <!-- Back button -->
+                <a href="index.html" style="color:#0066cc; font-family:Arial;">← Back to Home</a>
+                
+                <font face="Arial" size="4">
+                    <h1>📨 Contact Us</h1>
+                </font>
+
+                <!-- Contact form (1998 style) -->
+                <form id="contactForm" style="background:#f0f0f0; padding:15px; border:1px solid #ccc;">
+                    <table width="100%" border="0" cellspacing="10">
+                        <tr>
+                            <td colspan="2">
+                                <font face="Arial" size="3" color="#0066cc">
+                                    <b>Send us a message:</b>
+                                </font>
+                                <hr>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td width="30%">
+                                <font face="Arial" size="2">
+                                    <b>Your Name:</b>
+                                </font>
+                            </td>
+                            <td>
+                                <input type="text" name="name" size="40" style="font-family:Arial; padding:5px;" required>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <font face="Arial" size="2">
+                                    <b>Email:</b>
+                                </font>
+                            </td>
+                            <td>
+                                <input type="text" name="email" size="40" style="font-family:Arial; padding:5px;" required>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <font face="Arial" size="2">
+                                    <b>Message:</b>
+                                </font>
+                            </td>
+                            <td>
+                                <textarea name="message" rows="6" cols="50" style="font-family:Arial; padding:5px;" required></textarea>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <font face="Arial" size="2">
+                                    <b>Are you a:</b>
+                                </font>
+                            </td>
+                            <td>
+                                <select name="userType" style="font-family:Arial; padding:5px;">
+                                    <option value="Customer">Customer</option>
+                                    <option value="Business Owner">Business Owner</option>
+                                    <option value="Webmaster">Fellow Webmaster</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>
+                                <input type="submit" value="Send Message" style="font-family:Arial; padding:5px 15px; background:#0066cc; color:white; border:none;">
+                                <div id="formMessage" style="font-family:Arial; margin-top:10px;"></div>
+                            </td>
+                        </tr>
+                    </table>
+                </form>
+
+                <!-- Contact info -->
+                <table width="100%" border="0" cellspacing="0" cellpadding="20" bgcolor="#f9f9f9" style="margin-top:20px;">
+                    <tr>
+                        <td>
+                            <font face="Arial" size="3" color="#0066cc">
+                                <b>📞 Other Ways to Reach Us:</b>
+                            </font>
+                            <hr>
+                            <font face="Arial" size="2">
+                                <p><b>Email:</b> <a href="mailto:contact@localbusinessfinder.in" style="color:#0066cc;">contact@localbusinessfinder.in</a></p>
+                                <p><b>ICQ:</b> 8103356828 (Yes, we're retro!)</p>
+                                <p><b>AIM:</b> LocalBizFinder</p>
+                                <p><b>Address:</b> Virtual Office, Internet City, 452001</p>
+                            </font>
+                            <br>
+                            <img src="https://web.archive.org/web/19981202230110if_/http://www.geocities.com/vienna/6310/construction.gif" alt="Under construction">
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+
+    <!-- 1998-style footer -->
+    <table width="100%" border="0" cellspacing="0" cellpadding="10" bgcolor="#333333">
+        <tr>
+            <td align="center">
+                <font face="Arial" size="1" color="white">
+                    &copy; 2025 Local Business Finder. All Rights Reserved. | 
+                    <a href="terms.html" style="color:white;">Terms & Conditions</a> | 
+                    <a href="privacy.html" style="color:white;">Privacy Policy</a>
+                </font>
+            </td>
+        </tr>
+    </table>
+
+    <!-- JSONBin Integration for Contact Form -->
+    <script>
+        const JSONBIN_API_KEY = "$2a$10$9Juu7EG9wM8V8RLs/0eEJell4TTzsU2xtC7ftmGwxijibRFxbRwNK";
+        const JSONBIN_BIN_ID = "67f178668561e97a50f9484e";
+        const CONTACT_BIN_ID = "contact_submissions"; // Different bin for contact forms
+
+        document.getElementById("contactForm").addEventListener("submit", async function(e) {
+            e.preventDefault();
+            const form = e.target;
+            const messageDiv = document.getElementById("formMessage");
+
+            // Get form data
+            const formData = {
+                name: form.name.value,
+                email: form.email.value,
+                message: form.message.value,
+                userType: form.userType.value,
+                date: new Date().toISOString(),
+                id: Date.now()
+            };
+
+            try {
+                // Fetch existing contact submissions
+                const response = await fetch(`https://api.jsonbin.io/v3/b/${JSONBIN_BIN_ID}/latest`, {
+                    headers: { "X-Master-Key": JSONBIN_API_KEY }
+                });
+                const data = await response.json();
+                const existingContacts = data.record.contactSubmissions || [];
+
+                // Add new submission
+                existingContacts.push(formData);
+
+                // Update JSONBin
+                const updateResponse = await fetch(`https://api.jsonbin.io/v3/b/${JSONBIN_BIN_ID}`, {
+                    method: "PUT",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-Master-Key": JSONBIN_API_KEY
+                    },
+                    body: JSON.stringify({ 
+                        ...data.record,
+                        contactSubmissions: existingContacts 
+                    })
+                });
+
+                if (updateResponse.ok) {
+                    messageDiv.innerHTML = '<font color="green">✅ Message sent successfully! We\'ll reply via email.</font>';
+                    form.reset();
+                } else {
+                    throw new Error("Failed to update JSONBin");
+                }
+            } catch (error) {
+                console.error("Error:", error);
+                messageDiv.innerHTML = '<font color="red">❌ Error sending message. Please email us directly.</font>';
+            }
+        });
+    </script>
+</body>
+</html>
