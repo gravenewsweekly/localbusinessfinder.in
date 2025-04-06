@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Business Listings - Local Business Finder</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- 1998-style header -->
+    <table width="100%" border="0" cellspacing="0" cellpadding="10" bgcolor="#0066cc">
+        <tr>
+            <td width="200">
+                <font face="Arial" size="5" color="white">
+                    <b>Local Business Finder</b>
+                </font>
+            </td>
+            <td align="right">
+                <font face="Arial" size="2" color="white">
+                    <a href="index.html" style="color:white;">Home</a> | 
+                    <a href="submit-business.html" style="color:white;">Submit Business</a> | 
+                    <a href="about.html" style="color:white;">About Us</a> | 
+                    <a href="contact.html" style="color:white;">Contact</a>
+                </font>
+            </td>
+        </tr>
+    </table>
+
+    <!-- Main content -->
+    <table width="80%" border="0" align="center" cellpadding="20">
+        <tr>
+            <td>
+                <!-- Back button (1998-style) -->
+                <a href="index.html" style="color:#0066cc; font-family:Arial;">← Back to Home</a>
+                
+                <font face="Arial" size="4">
+                    <h1 id="pageTitle">📋 Business Listings</h1>
+                </font>
+
+                <!-- Filter controls -->
+                <table width="100%" border="0" cellspacing="0" cellpadding="10" bgcolor="#f0f0f0">
+                    <tr>
+                        <td width="20%">
+                            <font face="Arial" size="2">
+                                <b>Filter by:</b>
+                            </font>
+                        </td>
+                        <td width="30%">
+                            <select id="filterCategory" style="font-family:Arial; padding:5px; width:100%;" onchange="filterListings()">
+                                <option value="">All Categories</option>
+                                <option value="Restaurant">Restaurant</option>
+                                <option value="Tailor">Tailor</option>
+                                <option value="Plumber">Plumber</option>
+                                <option value="Electronics Repair">Electronics Repair</option>
+                                <option value="Grocery">Grocery</option>
+                                <option value="Doctor">Doctor</option>
+                            </select>
+                        </td>
+                        <td width="30%">
+                            <select id="filterCity" style="font-family:Arial; padding:5px; width:100%;" onchange="filterListings()">
+                                <option value="">All Cities</option>
+                                <option value="Delhi">Delhi</option>
+                                <option value="Mumbai">Mumbai</option>
+                                <option value="Bangalore">Bangalore</option>
+                                <option value="Indore">Indore</option>
+                                <option value="Chennai">Chennai</option>
+                            </select>
+                        </td>
+                        <td width="20%" align="right">
+                            <input type="text" id="searchKeyword" placeholder="Search..." style="font-family:Arial; padding:5px;" onkeyup="filterListings()">
+                        </td>
+                    </tr>
+                </table>
+
+                <!-- Loading message -->
+                <div id="loadingMessage" style="font-family:Arial; padding:20px; text-align:center;">
+                    <img src="https://www.iconsdb.com/icons/preview/guacamole-green/loading-xxl.png" width="30" alt="Loading">
+                    <br>Loading businesses...
+                </div>
+
+                <!-- Results container -->
+                <div id="listingsContainer" style="margin-top:20px;"></div>
+            </td>
+        </tr>
+    </table>
+
+    <!-- 1998-style footer -->
+    <table width="100%" border="0" cellspacing="0" cellpadding="10" bgcolor="#333333">
+        <tr>
+            <td align="center">
+                <font face="Arial" size="1" color="white">
+                    &copy; 2025 Local Business Finder. All Rights Reserved. | 
+                    <a href="terms.html" style="color:white;">Terms & Conditions</a> | 
+                    <a href="privacy.html" style="color:white;">Privacy Policy</a>
+                </font>
+            </td>
+        </tr>
+    </table>
+
+    <!-- JSONBin Integration -->
+    <script>
+        const JSONBIN_API_KEY = "$2a$10$9Juu7EG9wM8V8RLs/0eEJell4TTzsU2xtC7ftmGwxijibRFxbRwNK";
+        const JSONBIN_BIN_ID = "67f178668561e97a50f9484e";
+        let allBusinesses = [];
+
+        // Load data on page load
+        window.onload = function() {
+            // Check URL for category filter (e.g., listings.html?category=Restaurant)
+            const urlParams = new URLSearchParams(window.location.search);
+            const categoryFilter = urlParams.get('category');
+            if (categoryFilter) {
+                document.getElementById('filterCategory').value = categoryFilter;
+            }
+
+            fetchBusinesses();
+        };
+
+        function fetchBusinesses() {
+            fetch(`https://api.jsonbin.io/v3/b/${JSONBIN_BIN_ID}/latest`, {
+                headers: {
+                    "X-Master-Key": JSONBIN_API_KEY
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                allBusinesses = data.record.businesses || [];
+                filterListings();
+                document.getElementById('loadingMessage').style.display = 'none';
+            })
+            .catch(error => {
+                console.error("Error fetching data:", error);
+                document.getElementById('loadingMessage').innerHTML = 
+                    '<font color="red">Error loading businesses. Please try again later.</font>';
+            });
+        }
+
+        function filterListings() {
+            const category = document.getElementById('filterCategory').value.toLowerCase();
+            const city = document.getElementById('filterCity').value.toLowerCase();
+            const keyword = document.getElementById('searchKeyword').value.toLowerCase();
+            
+            // Update page title if filtered
+            if (category || city) {
+                let title = "Business Listings";
+                if (category) title += ` in ${document.getElementById('filterCategory').value}`;
+                if (city) title += ` (${document.getElementById('filterCity').value})`;
+                document.getElementById('pageTitle').innerText = title;
+            }
+
+            const filtered = allBusinesses.filter(biz => {
+                return (category === "" || biz.category.toLowerCase().includes(category)) &&
+                       (city === "" || biz.address.city.toLowerCase().includes(city)) &&
+                       (keyword === "" || 
+                        biz.name.toLowerCase().includes(keyword) || 
+                        biz.description.toLowerCase().includes(keyword) ||
+                        biz.category.toLowerCase().includes(keyword) ||
+                        biz.address.city.toLowerCase().includes(keyword));
+            });
+
+            displayListings(filtered);
+        }
+
+        function displayListings(businesses) {
+            const container = document.getElementById('listingsContainer');
+            
+            if (businesses.length === 0) {
+                container.innerHTML = `
+                    <table width="100%" border="0" cellspacing="0" cellpadding="20" bgcolor="#f9f9f9">
+                        <tr>
+                            <td align="center">
+                                <font face="Arial">
+                                    No businesses found. Try adjusting your filters.
+                                </font>
+                            </td>
+                        </tr>
+                    </table>
+                `;
+                return;
+            }
+
+            let html = `<table width="100%" border="0" cellspacing="0" cellpadding="10" bgcolor="#ffffff">`;
+            
+            businesses.forEach(biz => {
+                html += `
+                    <tr>
+                        <td width="70%" valign="top" style="border-bottom:1px solid #eee;">
+                            <font face="Arial" size="2">
+                                <b><a href="business-details.html?id=${biz.id}" style="color:#0066cc;">${biz.name}</a></b>
+                                <br><i>${biz.category}</i>
+                                <br>${biz.description}
+                                <br>📍 ${biz.address.street}, ${biz.address.city}, ${biz.address.state} - ${biz.address.pincode}
+                            </font>
+                        </td>
+                        <td width="30%" valign="top" style="border-bottom:1px solid #eee;">
+                            <font face="Arial" size="2">
+                                📞 ${biz.contact}
+                                ${biz.email ? `<br>✉️ ${biz.email}` : ''}
+                            </font>
+                        </td>
+                    </tr>
+                `;
+            });
+            
+            html += `</table>`;
+            container.innerHTML = html;
+        }
+    </script>
+</body>
+</html>
