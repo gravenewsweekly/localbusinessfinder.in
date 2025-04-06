@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Business Details - Local Business Finder</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- 1998-style header -->
+    <table width="100%" border="0" cellspacing="0" cellpadding="10" bgcolor="#0066cc">
+        <tr>
+            <td width="200">
+                <font face="Arial" size="5" color="white">
+                    <b>Local Business Finder</b>
+                </font>
+            </td>
+            <td align="right">
+                <font face="Arial" size="2" color="white">
+                    <a href="index.html" style="color:white;">Home</a> | 
+                    <a href="submit-business.html" style="color:white;">Submit Business</a> | 
+                    <a href="about.html" style="color:white;">About Us</a> | 
+                    <a href="contact.html" style="color:white;">Contact</a>
+                </font>
+            </td>
+        </tr>
+    </table>
+
+    <!-- Main content -->
+    <table width="80%" border="0" align="center" cellpadding="20">
+        <tr>
+            <td>
+                <!-- Back button -->
+                <a href="javascript:history.back()" style="color:#0066cc; font-family:Arial;">← Back to Listings</a>
+                
+                <!-- Business details container -->
+                <div id="businessDetails" style="margin-top:20px;">
+                    <table width="100%" border="0" cellspacing="0" cellpadding="20" bgcolor="#f9f9f9">
+                        <tr>
+                            <td align="center">
+                                <font face="Arial" size="2">
+                                    <img src="https://www.iconsdb.com/icons/preview/guacamole-green/loading-xxl.png" width="30" alt="Loading">
+                                    <br>Loading business details...
+                                </font>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <!-- Similar businesses -->
+                <div id="similarBusinesses" style="margin-top:30px; display:none;">
+                    <font face="Arial" size="3">
+                        <b>🔍 Similar Businesses Nearby:</b>
+                    </font>
+                    <div id="similarListings" style="margin-top:10px;"></div>
+                </div>
+            </td>
+        </tr>
+    </table>
+
+    <!-- 1998-style footer -->
+    <table width="100%" border="0" cellspacing="0" cellpadding="10" bgcolor="#333333">
+        <tr>
+            <td align="center">
+                <font face="Arial" size="1" color="white">
+                    &copy; 2025 Local Business Finder. All Rights Reserved. | 
+                    <a href="terms.html" style="color:white;">Terms & Conditions</a> | 
+                    <a href="privacy.html" style="color:white;">Privacy Policy</a>
+                </font>
+            </td>
+        </tr>
+    </table>
+
+    <!-- JSONBin Integration -->
+    <script>
+        const JSONBIN_API_KEY = "$2a$10$9Juu7EG9wM8V8RLs/0eEJell4TTzsU2xtC7ftmGwxijibRFxbRwNK";
+        const JSONBIN_BIN_ID = "67f178668561e97a50f9484e";
+
+        // Get business ID from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const businessId = parseInt(urlParams.get('id'));
+
+        // Fetch business details
+        if (businessId) {
+            fetch(`https://api.jsonbin.io/v3/b/${JSONBIN_BIN_ID}/latest`, {
+                headers: {
+                    "X-Master-Key": JSONBIN_API_KEY
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                const businesses = data.record.businesses || [];
+                const business = businesses.find(b => b.id === businessId);
+                
+                if (business) {
+                    displayBusinessDetails(business);
+                    showSimilarBusinesses(businesses, business);
+                } else {
+                    showError("Business not found");
+                }
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                showError("Failed to load business details");
+            });
+        } else {
+            showError("Invalid business ID");
+        }
+
+        function displayBusinessDetails(biz) {
+            const container = document.getElementById('businessDetails');
+            
+            container.innerHTML = `
+                <table width="100%" border="0" cellspacing="0" cellpadding="20" bgcolor="#f9f9f9">
+                    <tr>
+                        <td width="70%" valign="top">
+                            <font face="Arial" size="4">
+                                <b>${biz.name}</b>
+                            </font>
+                            <br>
+                            <font face="Arial" size="3" color="#0066cc">
+                                <i>${biz.category}</i>
+                            </font>
+                            <br><br>
+                            <font face="Arial" size="2">
+                                ${biz.description || "No description provided."}
+                            </font>
+                            <br><br>
+                            <font face="Arial" size="2">
+                                <b>📍 Address:</b><br>
+                                ${biz.address.street}<br>
+                                ${biz.address.city}, ${biz.address.state}<br>
+                                PIN: ${biz.address.pincode}
+                            </font>
+                        </td>
+                        <td width="30%" valign="top">
+                            <font face="Arial" size="2">
+                                <b>Contact Details:</b><br><br>
+                                📞 ${biz.contact}<br>
+                                ${biz.email ? `✉️ ${biz.email}<br>` : ''}
+                                <br>
+                                <a href="tel:${biz.contact}" style="color:#0066cc;">[Click to Call]</a>
+                            </font>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" align="center">
+                            <a href="submit-business.html" style="color:#0066cc; font-family:Arial;">
+                                ✏️ Is this your business? Update details
+                            </a>
+                        </td>
+                    </tr>
+                </table>
+            `;
+        }
+
+        function showSimilarBusinesses(allBusinesses, currentBusiness) {
+            const similar = allBusinesses.filter(biz => 
+                biz.id !== currentBusiness.id && 
+                (biz.category === currentBusiness.category || 
+                 biz.address.city === currentBusiness.address.city)
+            ).slice(0, 3); // Show max 3 similar businesses
+
+            if (similar.length > 0) {
+                const container = document.getElementById('similarListings');
+                let html = `<table width="100%" border="0" cellspacing="0" cellpadding="10" bgcolor="#ffffff">`;
+                
+                similar.forEach(biz => {
+                    html += `
+                        <tr>
+                            <td width="80%" valign="top" style="border-bottom:1px solid #eee;">
+                                <font face="Arial" size="2">
+                                    <b><a href="business-details.html?id=${biz.id}" style="color:#0066cc;">${biz.name}</a></b>
+                                    <br><i>${biz.category}</i>
+                                    <br>${biz.description.substring(0, 50)}...
+                                    <br>📍 ${biz.address.city}
+                                </font>
+                            </td>
+                            <td width="20%" valign="top" style="border-bottom:1px solid #eee;">
+                                <font face="Arial" size="2">
+                                    📞 ${biz.contact}
+                                </font>
+                            </td>
+                        </tr>
+                    `;
+                });
+                
+                html += `</table>`;
+                container.innerHTML = html;
+                document.getElementById('similarBusinesses').style.display = 'block';
+            }
+        }
+
+        function showError(message) {
+            const container = document.getElementById('businessDetails');
+            container.innerHTML = `
+                <table width="100%" border="0" cellspacing="0" cellpadding="20" bgcolor="#f9f9f9">
+                    <tr>
+                        <td align="center">
+                            <font face="Arial" color="red">
+                                ❌ ${message}
+                                <br><br>
+                                <a href="index.html" style="color:#0066cc;">Return to Homepage</a>
+                            </font>
+                        </td>
+                    </tr>
+                </table>
+            `;
+        }
+    </script>
+</body>
+</html>
